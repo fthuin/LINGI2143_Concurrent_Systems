@@ -1,34 +1,50 @@
-const N = 2
-range Ids = 0..N-1
+const N = 3
+range R = 0..(N-1)
+// It starts with an idle node this time
+NOMINALRING(I=N) = NODE_IDLE,
+// A node in the leader state can
+				// Access resources then pass a token
+NODE_LEADER = 	(open -> close -> sndtoken -> NODE_IDLE
+					// Pass the token
+		 			| sndtoken -> NODE_IDLE
+					),
+// A node in the idle/not eligible state can
+					// receive a token to become leader node
+NODE_IDLE = 	(rcvtoken -> NODE_LEADER
+					// receive a claim ; if the node number sending this claim is lower than this node, it transmits the claim
+					| rcvclaim[b:R] -> 	if (b < I) then (sndclaim[b] -> NODE_IDLE)
+									// ; else nothing happens
+										else NODE_IDLE
+					// send a claim (when a timeout occurs)
+					| sndclaim[I] -> NODE_ELIGIBLE
+					),
+// A node in eligible state can
+						// receive a token then become leader node
+NODE_ELIGIBLE = 	(rcvtoken -> NODE_LEADER
+						// receive a claim ; if the node number sending this claim is the same than this node, it becomes the leader
+						| rcvclaim[b:R] ->  if (I == b) then NODE_LEADER
+										  // if the node number sending the claim is lower than this node, it transmits the claim
+											else if (b < I) then (sndclaim[b] -> NODE_IDLE)
+										  // else nothing happens
+											else NODE_ELIGIBLE
+						// send a claim (when a timeout occurs)
+						| sndclaim[I] -> NODE_ELIGIBLE
+						) + {sndclaim[R]}.
 
-set Messages = {token, claim[Ids]}
+// The channel is a one slot buffer reliable that pass the token or the claims to become a leader
+CHANNEL = (tokensnd -> tokenrcvd -> CHANNEL | claimsnd[a:R] -> claimrcvd[a] -> CHANNEL).
 
-NODE(I=0) 	= 	IDLE, 
-IDLE 		= 	(rcv.token -> LEADER
-				| snd.claim[I] -> ELIGIBLE
-				| rcv.claim[j:Ids] ->
-								if(j < I) then (snd.claim[j] -> IDLE)
-								else IDLE),
-LEADER 		= 	(open->close->snd.token->IDLE
-				| snd.token->IDLE),
-ELIGIBLE	=	( snd.claim[I] -> ELIGIBLE
-				| rcv.token -> LEADER
-				| rcv.claim[j:Ids] ->
-								if (j == I) then LEADER
-								else 
-									if (j < I) then (snd.claim[j] -> IDLE)
-									else ELIGIBLE) + {snd.claim[Ids]}.
+// The election ring is a parallel composition of the nominal ring and the channel that needs to
+// be synchronized on the shared communication actions.
+||ELECTIONRING = ([a:R]:NOMINALRING(a) || [b:R]:CHANNEL ) / {[b:R].sndclaim[a:R]/[b].claimsnd[a],
+															[b:R].rcvclaim[a:R]/[(b+N-1)%N].claimrcvd[a],
+															[b:R].sndtoken/[b].tokensnd,
+															[b:R].rcvtoken/[(b+N-1)%N].tokenrcvd}.
 
-CHANNEL	= (in[m:Messages] -> out[m] -> CHANNEL).
+minimal ||ABSTRACT0 = ELECTIONRING.
+minimal ||ABSTRACT1 = ABSTRACT0 \ {[b:R].sndclaim[a:R]}.
+minimal ||ABSTRACT2 = ABSTRACT1 \ {[b:R].rcvclaim[a:R]}.
+minimal ||ABSTRACT3 = ABSTRACT2 \ {[b:R].rcvtoken}.
+minimal ||ABSTRACT4 = ABSTRACT3 \ {[b:R].sndtoken}.
 
-
-
-||ELECTIONRING = (node[i:Ids]:NODE(i) || channel[i:Ids]:CHANNEL)
-		 		/  {node[i:Ids].snd/channel[i].in,
-					node[i:Ids].rcv/channel[(i+1)%N].out}.
-
-||ABSTRACT0 = ELECTIONRING.
-||ABSTRACT1 = ABSTRACT0\{node[Ids].rcv.token}.
-||ABSTRACT2 = ABSTRACT1\{node[Ids].snd.token}.
-||ABSTRACT3 = ABSTRACT2\{node[Ids].rcv.claim}.
-||ABSTRACT4 = ABSTRACT3\{node[Ids].snd.claim}.
+// Use rigid : force le résultat à etre un boolean
