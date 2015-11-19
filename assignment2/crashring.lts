@@ -5,8 +5,8 @@ NOMINALNODE(I=N) = NODE_IDLE,
 
 NODE_CRASHED =	( idle -> NODE_CRASHED
                 | rcvclaim[b:R] -> 	if (b == I) then NODE_CRASHED
-                                    else (sndclaim[I] -> NODE_IDLE)
-                | sndtoken -> NODE_CRASHED
+                                    else (sndclaim[I] -> NODE_CRASHED)
+                | rcvtoken -> sndtoken -> NODE_CRASHED
 				),
 // A node in the leader state can
 				// Access resources then pass a token
@@ -49,3 +49,15 @@ CHANNEL = (tokensnd -> tokenrcvd -> CHANNEL | claimsnd[a:R] -> claimrcvd[a] -> C
 															[b:R].rcvclaim[a:R]/[(b+N-1)%N].claimrcvd[a],
 															[b:R].sndtoken/[b].tokensnd,
 															[b:R].rcvtoken/[(b+N-1)%N].tokenrcvd}.
+
+fluent CRITICAL[a:R] = <{[a].open}, {[a].close}>
+assert MUTEX = forall[a:R] forall[b:R] (rigid(a!=b) -> []!(CRITICAL[a] && CRITICAL[b] ))
+fluent FIRSTCLAIM[i:R] = <[i].sndclaim[i], [i].rcvclaim[i]>
+assert NODUPCLAIM = forall[a:R] (FIRSTCLAIM[a] -> X (! FIRSTCLAIM[a]))
+assert NODUP_MUTEX = (NODUPCLAIM -> MUTEX)
+
+assert ALLFAIR = [] <> [R].open
+
+assert NOCRASH = [] (! [R].crash)
+assert FAIR = [] <> [R].open
+assert NOCRASH_FAIR = (NOCRASH -> FAIR)
