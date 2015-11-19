@@ -1,20 +1,7 @@
 const N = 3
-range Ids = 0..N-1
 range R = 0..(N-1)
-
-NODE(I=0) 	= 	if I == 0 then LEADER else IDLE,
-IDLE 		= 	(rcv_token -> LEADER),
-LEADER 		= 	(open->close->snd_token->IDLE
-				| snd_token->IDLE).
-
-CHANNEL2	= (in -> out -> CHANNEL2).
-
-||NOMINALRING = (node[i:Ids]:NODE(i) || channel[i:Ids]:CHANNEL2 ||OPENCLOSE)
-		 		/  {node[i:Ids].snd_token/channel[i].in,
-					node[i:Ids].rcv_token/channel[(i+1)%N].out}.
-
 // It starts with an idle node this time
-NOMINALNODE(I=N) = NODE_IDLE,
+NOMINALRING(I=N) = NODE_IDLE,
 // A node in the leader state can
 				// Access resources then pass a token
 NODE_LEADER = 	(open -> close -> sndtoken -> NODE_IDLE
@@ -49,10 +36,9 @@ CHANNEL = (tokensnd -> tokenrcvd -> CHANNEL | claimsnd[a:R] -> claimrcvd[a] -> C
 
 // The election ring is a parallel composition of the nominal ring and the channel that needs to
 // be synchronized on the shared communication actions.
-||ELECTIONRING = ([a:R]:NOMINALNODE(a) || [b:R]:CHANNEL || OPENCLOSE2 ) / {[b:R].sndclaim[a:R]/[b].claimsnd[a],
+||ELECTIONRING = ([a:R]:NOMINALRING(a) || [b:R]:CHANNEL) / {[b:R].sndclaim[a:R]/[b].claimsnd[a],
 															[b:R].rcvclaim[a:R]/[(b+N-1)%N].claimrcvd[a],
 															[b:R].sndtoken/[b].tokensnd,
 															[b:R].rcvtoken/[(b+N-1)%N].tokenrcvd}.
 
-property OPENCLOSE = (node[i:Ids].open -> node[i].close -> OPENCLOSE).
-property OPENCLOSE2 = ([b:R].open -> [b].close -> OPENCLOSE2).
+progress OPEN = {[R].open}

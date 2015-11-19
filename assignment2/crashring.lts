@@ -1,35 +1,30 @@
 const N = 3
-range Ids = 0..N-1
 range R = 0..(N-1)
-
-NODE(I=0) 	= 	if I == 0 then LEADER else IDLE,
-IDLE 		= 	(rcv_token -> LEADER),
-LEADER 		= 	(open->close->snd_token->IDLE
-				| snd_token->IDLE).
-
-CHANNEL2	= (in -> out -> CHANNEL2).
-
-||NOMINALRING = (node[i:Ids]:NODE(i) || channel[i:Ids]:CHANNEL2 ||OPENCLOSE)
-		 		/  {node[i:Ids].snd_token/channel[i].in,
-					node[i:Ids].rcv_token/channel[(i+1)%N].out}.
-
 // It starts with an idle node this time
 NOMINALNODE(I=N) = NODE_IDLE,
+
+NODE_CRASHED =	( idle -> NODE_CRASHED
+                | rcvclaim[b:R] -> 	if (b == I) then NODE_CRASHED
+                                    else (sndclaim[I] -> NODE_IDLE)
+                | sndtoken -> NODE_CRASHED
+				),
 // A node in the leader state can
 				// Access resources then pass a token
 NODE_LEADER = 	(open -> close -> sndtoken -> NODE_IDLE
 					// Pass the token
 		 			| sndtoken -> NODE_IDLE
+                    | crash -> NODE_CRASHED
 					),
 // A node in the idle/not eligible state can
 					// receive a token to become leader node
 NODE_IDLE = 	(rcvtoken -> NODE_LEADER
 					// receive a claim ; if the node number sending this claim is lower than this node, it transmits the claim
-					| rcvclaim[b:R] -> 	if (b < I) then (sndclaim[b] -> NODE_IDLE)
+					| rcvclaim[b:R] -> 	if (b < I) then (sndclaim[b] -> NODE_IDLE )
 									// ; else nothing happens
 										else NODE_IDLE
 					// send a claim (when a timeout occurs)
 					| sndclaim[I] -> NODE_ELIGIBLE
+                    | crash -> NODE_CRASHED
 					),
 // A node in eligible state can
 						// receive a token then become leader node
@@ -42,6 +37,7 @@ NODE_ELIGIBLE = 	(rcvtoken -> NODE_LEADER
 											else NODE_ELIGIBLE
 						// send a claim (when a timeout occurs)
 						| sndclaim[I] -> NODE_ELIGIBLE
+                        | crash -> NODE_CRASHED
 						) + {sndclaim[R]}.
 
 // The channel is a one slot buffer reliable that pass the token or the claims to become a leader
@@ -49,10 +45,7 @@ CHANNEL = (tokensnd -> tokenrcvd -> CHANNEL | claimsnd[a:R] -> claimrcvd[a] -> C
 
 // The election ring is a parallel composition of the nominal ring and the channel that needs to
 // be synchronized on the shared communication actions.
-||ELECTIONRING = ([a:R]:NOMINALNODE(a) || [b:R]:CHANNEL || OPENCLOSE2 ) / {[b:R].sndclaim[a:R]/[b].claimsnd[a],
+||CRASHRING = ([a:R]:NOMINALNODE(a) || [b:R]:CHANNEL) / {[b:R].sndclaim[a:R]/[b].claimsnd[a],
 															[b:R].rcvclaim[a:R]/[(b+N-1)%N].claimrcvd[a],
 															[b:R].sndtoken/[b].tokensnd,
 															[b:R].rcvtoken/[(b+N-1)%N].tokenrcvd}.
-
-property OPENCLOSE = (node[i:Ids].open -> node[i].close -> OPENCLOSE).
-property OPENCLOSE2 = ([b:R].open -> [b].close -> OPENCLOSE2).
