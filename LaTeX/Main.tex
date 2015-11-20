@@ -48,16 +48,11 @@
 
 \section{Violation trace for OPENCLOSE on ELECTIONRING(3)}
 
-\begin{figure}[h!]
-\begin{equation*}
-\begin{split}
-	0.sndclaim.0 \rightarrow 1.rcvclaim.0 \rightarrow 0.sndclaim.0 \rightarrow 1.sndclaim.0 \rightarrow 1.rcvclaim.0 \rightarrow \\ 2.rcvclaim.0 \rightarrow 1.sndclaim.0 \rightarrow 2.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow 0.sndtoken \rightarrow \\
-    1.rcvtoken \rightarrow \textcolor{red}{1.open} \rightarrow 2.rcvclaim.0 \rightarrow 2.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow \textcolor{red}{0.open}
-\end{split}
-\end{equation*}
-\caption{The violation trace for OPENCLOSE on ELECTIONRING(3)}
-\end{figure}
 \input{violation_trace_openclose.tex}
+
+\section{CRASHRING LTS}
+
+\todo[inlne]{Afficher le LTS}
 
 \section{ALLFAIR property}
 
