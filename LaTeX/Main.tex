@@ -1,0 +1,120 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage[english]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{todonotes}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{titlepage}
+	\begin{center}
+		\includegraphics[scale=0.4]{epl-logo.jpg} \\[1.5cm]
+		\textsc{\LARGE catholic university of louvain-la-neuve} \\[0.5cm]
+		\textsc{\Large INGI2143 - Concurrent Systems}\\[2cm]
+    		{ \huge \bfseries Report - Assignment 2\\[0.4cm] }
+		{\large Alexandre Hauet \\ [0.1cm]Florian Thuin}\\[2cm]
+		{\large \today}
+	\end{center}
+\end{titlepage}
+
+\section{Introduction}
+
+\todo[inline]{Ajouter l'explication de chaque fichier + observations/problèmes }
+
+\section{Minimization of ELECTIONSERVICE vs multiple minimizations}
+
+\begin{tabular}{l|p{0.25\linewidth}|l|l|l}
+	Process & Alphabet & Number of states & Minimiz. time & Cum miniz. time \\
+    \hline
+    ELECTIONSERVICE(3) & [0..2].{close, open} & 740 & & \\
+    ABSTRACT0(3) & [0..2].{{close, open}, rcvclaim[0..2], rcvtoken, sndclaim[0..2], sndtoken} & 5652 & 501ms & 501ms \\
+    ABSTRACT1(3) & [0..2].{{close, open}, rcvclaim[0..2], {rcvtoken, sndtoken}} & 4826 & 550ms & 1051ms \\
+    ABSTRACT2(3) & [0..2].{close, open, rcvtoken, sndtoken} & 2192 & 547ms & 1598ms \\
+    ABSTRACT3(3) & [0..2].{close, open, sndtoken} & 1793 & 55ms & 1653ms \\
+    ABSTRACT4(3) & [0..2].{close, open} & 740 & 31995ms & 33648ms \\
+\end{tabular}
+
+\section{Property OPENCLOSE}
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=\textwidth]{openclose_lts.png}
+    \caption{Picture of the LTS of the property openclose}
+\end{figure}
+
+\section{Violation trace for OPENCLOSE on ELECTIONRING(3)}
+
+\begin{figure}[h!]
+\begin{equation*}
+\begin{split}
+	0.sndclaim.0 \rightarrow 1.rcvclaim.0 \rightarrow 0.sndclaim.0 \rightarrow 1.sndclaim.0 \rightarrow 1.rcvclaim.0 \rightarrow \\ 2.rcvclaim.0 \rightarrow 1.sndclaim.0 \rightarrow 2.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow 0.sndtoken \rightarrow \\ 
+    1.rcvtoken \rightarrow \textcolor{red}{1.open} \rightarrow 2.rcvclaim.0 \rightarrow 2.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow \textcolor{red}{0.open}
+\end{split}
+\end{equation*}
+\caption{The violation trace for OPENCLOSE on ELECTIONRING(3)}
+\end{figure}
+
+\section{ALLFAIR property}
+
+Here is the violation trace for ALLFAIR on ELECTIONRING(3) without fair choice :
+
+\verb#0.sndclaim.0 -> 1.rcvclaim.0  -> 0.sndclaim.0 -> 1.sndclaim.0 -> 1.rcvclaim.0 -> 0.sndclaim.0 -> 2.rcvclaim.0 -> 1.sndclaim.0 -> 1.rcvclaim.0 -> 2.sndclaim.0 -> 0.rcvclaim.0 -> 0.sndtoken -> 2.rcvclaim.0 -> 1.sndclaim.0 -> 1.rcvtoken -> 0.sndclaim.0 -> 2.sndclaim.0 -> 0.rcvclaim.0 -> 2.rcvclaim.0 -> 1.sndtoken -> 1.rcvclaim.0 -> 0.sndtoken -> 2.sndclaim.0 -> 2.rcvtoken -> 1.sndclaim.0 -> 1.rcvtoken -> 0.sndclaim.0 -> 0.rcvclaim.0 -> 2.sndtoken -> 2.rcvclaim.0 -> 1.sndtoken -> 1.rcvclaim.0 -> 0.sndtoken -> 0.rcvtoken -> 2.sndclaim.0 -> 2.rcvtoken -> 1.sndclaim.0 -> 1.rcvtoken -> 0.sndtoken -> 0.rcvclaim.0 -> 2.sndtoken -> 0.rcvtoken -> 2.rcvclaim.0 -> 1.sndtoken
+-> 1.rcvtoken
+-> 0.sndtoken
+-> 2.sndclaim.0
+-> 2.rcvtoken
+-> 1.sndtoken
+-> 1.rcvtoken
+-> 0.sndclaim.0
+-> 0.rcvclaim.0
+-> 2.sndtoken
+-> 2.rcvtoken
+-> 1.sndtoken
+-> 1.rcvclaim.0
+-> 0.sndtoken
+-> 0.rcvtoken
+-> 2.sndtoken
+-> 2.rcvtoken
+-> 1.sndclaim.0
+-> 1.rcvtoken
+-> 0.sndtoken
+-> 0.rcvtoken
+-> 2.sndtoken
+-> 2.rcvclaim.0
+-> 1.sndtoken
+-> 1.rcvtoken
+-> 0.sndtoken
+-> 0.rcvtoken
+-> 2.sndclaim.0
+-> 2.rcvtoken
+-> 1.sndtoken
+-> 1.rcvtoken
+-> 0.sndtoken
+-> 0.rcvclaim.0
+-> 2.sndtoken
+-> 0.rcvtoken
+-> 2.sndclaim.2
+-> 2.rcvtoken
+-> 1.sndtoken
+-> 1.rcvtoken
+-> 0.sndtoken# \newline
+
+As this trace isn't really readable, the cycle in terminal set is : \newline
+
+0.rcvclaim.2
+-> 2.sndtoken
+-> 0.rcvtoken
+-> 2.sndclaim.2
+-> 2.rcvtoken
+-> 1.sndtoken
+-> 1.rcvtoken
+-> 0.sndtoken
+
+We can explain this result : if the node is always in the election protocol (so never in the \textit{access resources} mode), there isn't any \verb#open# transition. However, it is only possible if there isn't a fair choice between the transition otherwise we would indefintly often access resources and the property ALLFAIR would be respected.
+
+\end{document}
+
+ 
