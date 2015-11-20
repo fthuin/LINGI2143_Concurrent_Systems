@@ -46,16 +46,7 @@
 \end{figure}
 
 \section{Violation trace for OPENCLOSE on ELECTIONRING(3)}
-
-\begin{figure}[h!]
-\begin{equation*}
-\begin{split}
-	0.sndclaim.0 \rightarrow 1.rcvclaim.0 \rightarrow 0.sndclaim.0 \rightarrow 1.sndclaim.0 \rightarrow 1.rcvclaim.0 \rightarrow \\ 2.rcvclaim.0 \rightarrow 1.sndclaim.0 \rightarrow 2.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow 0.sndtoken \rightarrow \\ 
-    1.rcvtoken \rightarrow \textcolor{red}{1.open} \rightarrow 2.rcvclaim.0 \rightarrow 2.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow \textcolor{red}{0.open}
-\end{split}
-\end{equation*}
-\caption{The violation trace for OPENCLOSE on ELECTIONRING(3)}
-\end{figure}
+\include{violation_trace_openclose.tex}
 
 \section{ALLFAIR property}
 
@@ -116,5 +107,3 @@ As this trace isn't really readable, the cycle in terminal set is : \newline
 We can explain this result : if the node is always in the election protocol (so never in the \textit{access resources} mode), there isn't any \verb#open# transition. However, it is only possible if there isn't a fair choice between the transition otherwise we would indefintly often access resources and the property ALLFAIR would be respected.
 
 \end{document}
-
- 
