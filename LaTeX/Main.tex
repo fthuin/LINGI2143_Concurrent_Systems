@@ -106,4 +106,6 @@ As this trace isn't really readable, the cycle in terminal set is : \newline
 
 We can explain this result : if the node is always in the election protocol (so never in the \textit{access resources} mode), there isn't any \verb#open# transition. However, it is only possible if there isn't a fair choice between the transition otherwise we would indefintly often access resources and the property ALLFAIR would be respected.
 
+\section{Checking MUTEX using Supertrace on ELECTIONRING(N)}
+\include{supertrace_mutex.tex}
 \end{document}
