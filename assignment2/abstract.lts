@@ -41,6 +41,8 @@ CHANNEL = (tokensnd -> tokenrcvd -> CHANNEL | claimsnd[a:R] -> claimrcvd[a] -> C
 															[b:R].sndtoken/[b].tokensnd,
 															[b:R].rcvtoken/[(b+N-1)%N].tokenrcvd}.
 
+||ELECTIONSERVICE = ELECTIONRING @ {[R].open, [R].close}.
+
 minimal ||ABSTRACT0 = ELECTIONRING.
 minimal ||ABSTRACT1 = ABSTRACT0 \ {[b:R].sndclaim[a:R]}.
 minimal ||ABSTRACT2 = ABSTRACT1 \ {[b:R].rcvclaim[a:R]}.
