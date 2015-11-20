@@ -1,0 +1,11 @@
+\begin{figure}[h!]
+\begin{equation*}
+\begin{split}
+	0.sndclaim.0 \rightarrow 1.rcvclaim.0 \rightarrow 0.sndclaim.0 \rightarrow 1.sndclaim.0 \rightarrow 1.rcvclaim.0 \rightarrow \\ 2.rcvclaim.0 \rightarrow 1.sndclaim.0 \rightarrow 2.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow 0.sndtoken \rightarrow \\
+    1.rcvtoken \rightarrow \textcolor{red}{1.open} \rightarrow 2.rcvclaim.0 \rightarrow 2.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow \textcolor{red}{0.open}
+\end{split}
+\end{equation*}
+\caption{The violation trace for OPENCLOSE on ELECTIONRING(3)}
+\end{figure}
+
+We can see with this trace that two nodes (1 and 0) want to access to the resource at the same time. It's a violation of the propety because the property define that a node can't access to the resource before an other node close it.
