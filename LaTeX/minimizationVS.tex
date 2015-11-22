@@ -1,0 +1,10 @@
+\begin{tabular}{l|p{0.25\linewidth}|l|l|l}
+	Process & Alphabet & Number of states & Minimiz. time & Cum miniz. time \\
+    \hline
+    ELECTIONSERVICE(3) & [0..2].{close, open} & 740 & 52min & 52min \\
+    ABSTRACT0(3) & [0..2].{{close, open}, rcvclaim[0..2], rcvtoken, sndclaim[0..2], sndtoken} & 5652 & 501ms & 501ms \\
+    ABSTRACT1(3) & [0..2].{{close, open}, rcvclaim[0..2], {rcvtoken, sndtoken}} & 4826 & 550ms & 1051ms \\
+    ABSTRACT2(3) & [0..2].{close, open, rcvtoken, sndtoken} & 2192 & 547ms & 1598ms \\
+    ABSTRACT3(3) & [0..2].{close, open, sndtoken} & 1793 & 55ms & 1653ms \\
+    ABSTRACT4(3) & [0..2].{close, open} & 740 & 31995ms & 33648ms \\
+\end{tabular}

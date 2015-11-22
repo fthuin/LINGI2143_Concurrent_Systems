@@ -1,0 +1,24 @@
+Here is the violation trace for ALLFAIR on ELECTIONRING(3) without fair choice :
+\begin{figure}[!h]
+\begin{equation*}
+\begin{aligned}
+    0.sndclaim.0 \rightarrow 1.rcvclaim.0 \rightarrow 0.sndclaim.0 \rightarrow 1.sndclaim.0 \rightarrow 1.rcvclaim.0 \rightarrow 0.sndclaim.0 \rightarrow 2.rcvclaim.0 \rightarrow \\
+    1.sndclaim.0 \rightarrow 1.rcvclaim.0 \rightarrow 2.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow 0.sndtoken \rightarrow 2.rcvclaim.0 \rightarrow 1.sndclaim.0 \rightarrow \\
+    1.rcvtoken \rightarrow 0.sndclaim.0 \rightarrow 2.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow 2.rcvclaim.0 \rightarrow 1.sndtoken \rightarrow 1.rcvclaim.0 \rightarrow \\
+    0.sndtoken \rightarrow 2.sndclaim.0 \rightarrow 2.rcvtoken \rightarrow 1.sndclaim.0 \rightarrow 1.rcvtoken \rightarrow 0.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow \\
+    2.sndtoken \rightarrow 2.rcvclaim.0 \rightarrow 1.sndtoken \rightarrow 1.rcvclaim.0 \rightarrow 0.sndtoken \rightarrow 0.rcvtoken \rightarrow 2.sndclaim.0 \rightarrow  \\
+    2.rcvtoken \rightarrow 1.sndclaim.0 \rightarrow 1.rcvtoken \rightarrow 0.sndtoken \rightarrow 0.rcvclaim.0 \rightarrow 2.sndtoken \rightarrow 0.rcvtoken \rightarrow    \\
+    2.rcvclaim.0 \rightarrow 1.sndtoken \rightarrow 1.rcvtoken \rightarrow 0.sndtoken \rightarrow 2.sndclaim.0 \rightarrow 2.rcvtoken \rightarrow 1.sndtoken \rightarrow   \\
+    1.rcvtoken \rightarrow 0.sndclaim.0 \rightarrow 0.rcvclaim.0 \rightarrow 2.sndtoken \rightarrow 2.rcvtoken \rightarrow 1.sndtoken \rightarrow 1.rcvclaim.0 \rightarrow  \\
+    0.sndtoken \rightarrow 0.rcvtoken \rightarrow 2.sndtoken \rightarrow 2.rcvtoken \rightarrow 1.sndclaim.0 \rightarrow 1.rcvtoken \rightarrow 0.sndtoken \rightarrow     \\
+    0.rcvtoken \rightarrow 2.sndtoken \rightarrow 2.rcvclaim.0 \rightarrow 1.sndtoken \rightarrow 1.rcvtoken \rightarrow 0.sndtoken \rightarrow 0.rcvtoken \rightarrow \\
+    2.sndclaim.0 \rightarrow 2.rcvtoken \rightarrow 1.sndtoken \rightarrow 1.rcvtoken \rightarrow 0.sndtoken \rightarrow 0.rcvclaim.0 \rightarrow 2.sndtoken \rightarrow \\
+    0.rcvtoken \rightarrow 2.sndclaim.2 \rightarrow 2.rcvtoken \rightarrow 1.sndtoken \rightarrow 1.rcvtoken \rightarrow 0.sndtoken \\
+\end{aligned}
+\end{equation*}
+As this trace isn't really readable, the cycle in terminal set is :
+\begin{equation*}
+    0.rcvclaim.2 \rightarrow 2.sndtoken \rightarrow 0.rcvtoken \rightarrow 2.sndclaim.2 \rightarrow 2.rcvtoken \rightarrow 1.sndtoken \rightarrow 1.rcvtoken \rightarrow 0.sndtoken
+\end{equation*}
+\end{figure}
+We can explain this result : if the node is always in the election protocol (so never in the \textit{access resources} mode), there isn't any \verb#open# transition. However, it is only possible if there isn't a fair choice between the transition otherwise we would indefintely often access resources and the property ALLFAIR would be respected.
