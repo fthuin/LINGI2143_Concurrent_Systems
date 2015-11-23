@@ -8,6 +8,8 @@
 \usepackage{todonotes}
 \usepackage[fleqn]{amsmath}
 \usepackage{spverbatim}
+\usepackage{longtable}
+\usepackage{color, colortbl}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
 \begin{document}
@@ -18,7 +20,7 @@
 
 
 % Upper part of the page
-\includegraphics[width=0.5\textwidth]{epl-logo.jpg}\\[1cm]
+\includegraphics[width=0.5\textwidth]{epl-logo.png}\\[1cm]
 
 \textsc{\LARGE catholic university of louvain-la-neuve}\\[1.5cm]
 
@@ -78,6 +80,9 @@ When a node crash, it realize the action ''crash'' to go in the state NODE\_CRAS
 
 \section{Checking MUTEX using Supertrace on ELECTIONRING(N)}
 \input{supertrace_mutex.tex}
+
+\section{Checking MUTEX using different Supertrace parameters}
+\input{supertrace_parameters.tex}
 
 \section{Conclusion}
 \input{conclusion.tex}

@@ -1,0 +1,59 @@
+\begin{longtable}{l|l|l|l|l|l}
+HashTable size (Kb) & Search depth & Number of states & Transitions & Time & Length of violation \\
+\hline
+\rowcolor{red!40}1000 & 20 & 2179 & 9457 & 11ms & 0 \\
+\rowcolor{red!40}20000 & 20 & 2179 & 9457 & 8ms & 0 \\
+\rowcolor{red!40}40000 & 20 & 2179 & 9457 & 7ms & 0 \\
+\rowcolor{red!40}60000 & 20 & 2179 & 9457 & 7ms & 0 \\
+\rowcolor{red!40}80000 & 20 & 2179 & 9457 & 5ms & 0 \\
+\rowcolor{red!40}100000 & 20 & 2179 & 9457 & 5ms & 0 \\
+\rowcolor{red!40}20000 & 50 & 8776 & 35035 & 16ms & 0 \\
+\rowcolor{red!40}20000 & 75 & 29168 & 105429 & 42ms & 0 \\
+\rowcolor{red!40}20000 & 80 & 81363 & 305813 & 126ms & 0 \\
+\rowcolor{red!40}1000 & 91 & 42277 & 148390 & 57ms & 0 \\
+\rowcolor{red!40}1000 & 92 & 59624 & 217178 & 85ms & 0 \\
+1000 & 93 & 69577 & 255080 & 100ms & 50 \\
+\rowcolor{red!40}1000 & 94 & 72925 & 263255 & 103ms & 0 \\
+1000 & 95 & 91889 & 332664 & 112ms & \cellcolor{green!40}45 \\
+100000 & 95 & 93801 & 339557 & 152ms & \cellcolor{green!40}45 \\
+\rowcolor{red!40}1000 & 96 & 71452 & 260285 & 95ms & 0 \\
+1000 & 97 & 94180 & 338071 & 141ms & 55 \\
+20000 & 97 & 91236 & 327673 & 114ms & 56 \\
+1000 & 98 & 63359 & 230983 & 93ms & 47 \\
+1000 & 99 & 67496 & 239471 & 85ms & 51 \\
+20000 & 100 & 63539 & 223387 & 95ms & 51 \\
+500 & 150 & 1204 & 3666 & 4ms & 75 \\
+1000 & 150 & 1204 & 3666 & 2ms & 77 \\
+20000 & 150 & 1204 & 3666 & 2ms & 75 \\
+1000 & 200 & \cellcolor{green!40}139 & \cellcolor{green!40}280 & 1ms & 96 \\
+1000 & 300 & 150 & 308 & 0ms & 148 \\
+1000 & 400 & 246 & 527 & 0ms & 193 \\
+1000 & 500 & 198 & 409 & 1ms & 198 \\
+20000 & 500 & 198 & 409 & 1ms & 198 \\
+40000 & 500 & 198 & 409 & 1ms & 198 \\
+60000 & 500 & 198 & 409 & 1ms & 198 \\
+80000 & 500 & 198 & 409 & 1ms & 198 \\
+100000 & 500 & 198 & 409 & 0ms & 198 \\
+1000 & 1000 & 198 & 409 & 0ms & 198 \\
+20000 & 1000 & 198 & 409 & 0ms & 198 \\
+40000 & 1000 & 198 & 409 & 0ms & 198 \\
+60000 & 1000 & 198 & 409 & 0ms & 198 \\
+80000 & 1000 & 198 & 409 & 0ms & 198 \\
+100000 & 1000 & 198 & 409 & 0ms & 198 \\
+1000 & 1500 & 198 & 409 & 0ms & 198 \\
+20000 & 1500 & 198 & 409 & 0ms & 198 \\
+40000 & 1500 & 198 & 409 & 0ms & 198 \\
+60000 & 1500 & 198 & 409 & 0ms & 198 \\
+80000 & 1500 & 198 & 409 & 1ms & 198 \\
+100000 & 1500 & 198 & 409 & 1ms & 198 \\
+1000 & 2000 & 198 & 409 & 0ms & 198 \\
+20000 & 2000 & 198 & 409 & 0ms & 198 \\
+40000 & 2000 & 198 & 409 & 0ms & 198 \\
+60000 & 2000 & 198 & 409 & 0ms & 198 \\
+80000 & 2000 & 198 & 409 & 0ms & 198 \\
+100000 & 2000 & 198 & 409 & 0ms & 198 \\
+\end{longtable}
+
+As we can see among the results in the table, the values that lead to the shortest trace are the ones with a search depth of 95. The length of the violation trace increases as the search depth increases but its maximum value (198) is reached when the search depth is greater than 500. \newline
+
+We can also see that the amount of states and transitions decreases as the search depth or the HashTable size increases. \newline
