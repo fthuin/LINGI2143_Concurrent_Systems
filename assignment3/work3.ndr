@@ -1,0 +1,57 @@
+p 280.0 50.0 {vehicle free} 1 n
+p 245.0 195.0 {officers free} 2 n
+t 105.0 155.0 {form patrol} w 0 w n {} ne
+t 390.0 230.0 {free patrol} w 0 w n {} ne
+p 220.0 330.0 {patrols free} 0 s
+t 680.0 230.0 {incident call} w 0 w n {} ne
+t 890.0 230.0 {crime call} e 0 w n {} ne
+p 895.0 105.0 {clerks free} 2 n
+p 890.0 360.0 crime 0 n
+p 685.0 355.0 incident 0 n
+t 685.0 465.0 {patrol found} w 0 w n {} ne
+p 690.0 565.0 intervention 0 n
+t 685.0 655.0 report w 0 w n {} ne
+t 900.0 465.0 {patrol found2} e 0 w n {} ne
+p 900.0 555.0 intervention2 0 e
+t 950.0 820.0 {write report} e 0 w n {} ne
+p 1170.0 530.0 {inspectors free} 1 n
+p 1070.0 475.0 {coroners free} 1 n
+t 900.0 655.0 investigation e 0 w n {} ne
+p 905.0 735.0 report2 0 e
+e {officers free} {form patrol} 2 se
+e {vehicle free} {form patrol} 1 n
+e {form patrol} {patrols free} 1 n
+e {patrols free} {free patrol} 1 n
+e {free patrol} {officers free} 2 se
+e {free patrol} {vehicle free} 1 n
+e {clerks free} {incident call} 1 n
+e {clerks free} {crime call} 1 n
+e {incident call} incident 1 n
+e {crime call} crime 1 n
+e incident {patrol found} 1 n
+e {patrols free} {patrol found} 1 n
+e {patrol found} intervention 1 n
+e intervention report 1 n
+e report {patrols free} 1 n
+e {clerks free} report 1 n
+e report {clerks free} 1 n
+e {patrols free} {patrol found2} 1 n
+e crime {patrol found2} 1 n
+e {patrol found2} intervention2 1 n
+e intervention2 investigation 1 n
+e investigation report2 1 n
+e report2 {write report} 1 n
+e investigation {officers free} 1 n
+e investigation {vehicle free} 1 n
+e {write report} {officers free} 1 n
+e {write report} {inspectors free} 1 n
+e investigation {coroners free} 1 n
+e {write report} {clerks free} 1 n
+e {inspectors free} investigation 1 n
+e {coroners free} investigation 1 n
+e {clerks free} {write report} 1 n
+e {patrol found} {clerks free} 1 n
+e {patrol found2} {clerks free} 1 n
+h work3
+
+
