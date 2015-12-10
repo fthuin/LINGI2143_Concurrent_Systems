@@ -1,2 +1,30 @@
 \section{T- and P-invariants}
 \label{sec:T- and P-invariants}
+
+\subsection{P-Semi-Flows}
+
+\begin{lstlisting}
+{coroners free}
+{clerks free} crime incident
+{inspectors free} report2
+intervention*2 intervention2*2 {officers free} {patrols free}*2 report2
+intervention intervention2 {patrols free} {vehicle free}
+\end{lstlisting}
+
+These invariants show how the Petri net can get back the global same amount of tokens. It is the result of a set of linear \enquote{flow} equations from the incidence matrix. \newline
+
+For example, \verb#{coroners free}# place always have the same amount of tokens (because the arrow leaves this place to a transition that has an arrow to this place). \newline
+
+Another example is that the amount of tokens in \verb#{clerks free}# and \verb#crime# and \verb#incident# is always the same. It can be explained by the fact that the arrows from \verb#{clerks free}# leaves weither to \verb#crime# or to \verb#incident#, which next transitions lead to send the token back to \verb#{clerks free}#. \newline
+
+\subsection{T-Semi-Flows}
+
+\begin{lstlisting}
+{incident call} {patrol found} report
+{crime call} {form patrol} investigation {patrol found2} {write report}
+{form patrol} {free patrol}
+\end{lstlisting}
+
+These invariants show how the Petri can get back to the exact same state. \newline
+
+Activating a transition \verb#{incident call}#, then a \verb#{patrol found}# transition, then a \verb#report# transition will take the Petri net in the exact same state it was before.
