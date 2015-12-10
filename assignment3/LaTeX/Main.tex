@@ -1,0 +1,68 @@
+\documentclass[fleqn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage[english]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{todonotes}
+\usepackage{amsmath}
+\usepackage{spverbatim}
+\usepackage{longtable}
+\usepackage{placeins}
+\usepackage{color, colortbl}
+\usepackage{csquotes}
+\usepackage{framed}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\begin{document}
+
+\begin{titlepage}
+
+\begin{center}
+
+
+% Upper part of the page
+\includegraphics[width=0.5\textwidth]{epl-logo.png}\\[1cm]
+
+\textsc{\LARGE catholic university of louvain-la-neuve}\\[1.5cm]
+
+\textsc{\Large INGI2143 - Concurrent Systems}\\[0.5cm]
+
+
+% Title
+\HRule \\[0.4cm]
+{ \huge \bfseries Report - Assignment 3}\\[0.4cm]
+
+\HRule \\[1.5cm]
+
+% Author
+
+{\huge Alexandre \textsc{Hauet} \\[0.6cm] Florian \textsc{Thuin}}
+
+
+\vfill
+
+% Bottom of the page
+{\large \today}
+
+\end{center}
+
+\end{titlepage}
+
+% Graphical representation of the Petri Net
+\input{graphical_display_pn.tex}
+
+% T- and P-invariants
+\input{invariants.tex}
+
+% Reachability analysis
+\input{reachability_analysis.tex}
+
+% Deadlock trace
+\input{deadlock_trace.tex}
+
+% Petri Net variant
+\input{variant_pn.tex}
+
+\end{document}
