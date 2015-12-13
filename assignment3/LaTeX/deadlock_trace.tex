@@ -1,6 +1,11 @@
 \section{Deadlock trace}
 \label{sec:Deadlock trace}
 
+\lstset{
+    frame=single,
+    breaklines=true
+}
+
 Here is the deadlock trace :
 
 \begin{lstlisting}
@@ -25,5 +30,3 @@ FALSE
 This deadlock trace can be explained as follow : \newline
 
 There is 2 \textit{crime calls} that leads the two clerks to be busy waiting for a patrol. Then, a \textit{patrol} (2 officers and a vehicle) is created ; a clerk found it and send it on the \textit{intervention2} (one clerck is thus free). A \textit{crime call} happens, the only clerck left is now busy. The \textit{coroner}, the \textit{inspector} and the \textit{patrol} goes on investigation. When it is finished, they need a clerck for the report, but the two existing are already busy with a \textit{crime call}, waiting for a patrol (the only one existing is busy, waiting for a clerck to be available). \newline
-
-
