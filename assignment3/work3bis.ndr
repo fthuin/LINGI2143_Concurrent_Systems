@@ -1,0 +1,57 @@
+t 180.0 50.0 {incident call} w 0 w n {} ne
+p 180.0 100.0 incident 0 w
+p 310.0 50.0 {clerks free} 2 n
+t 725.0 50.0 {crime call} e 0 w n {} ne
+t 725.0 165.0 {patrol found for crime} e 0 w n {} ne
+p 725.0 100.0 crime 0 e
+p 725.0 245.0 {intervention on crime place} 0 e
+t 725.0 320.0 investigation nw 0 w n {} ne
+p 300.0 250.0 {patrols free} 0 n
+t 300.0 460.0 {form patrol} w 0 w n {} ne
+p 180.0 290.0 {intervention on incident place} 0 w
+t 180.0 170.0 {patrol found for incident} w 0 w n {} ne
+t 725.0 460.0 {write the report} e 0 w n {} ne
+p 940.0 235.0 {coroners free} 1 n
+p 940.0 320.0 {inspectors free} 1 n
+p 725.0 385.0 {report on crime} 0 e
+p 485.0 460.0 {officers free} 2 s
+p 385.0 365.0 {vehicle free} 1 s
+t 430.0 250.0 {free patrol} e 0 w n {} ne
+t 180.0 460.0 {report on incident} w 0 w n {} ne
+e {officers free} {form patrol} 2 se
+e {vehicle free} {form patrol} 1 n
+e {form patrol} {patrols free} 1 n
+e {patrols free} {free patrol} 1 n
+e {free patrol} {officers free} 2 w
+e {free patrol} {vehicle free} 1 n
+e {clerks free} {incident call} 1 n
+e {clerks free} {crime call} 1 n
+e {incident call} incident 1 n
+e {crime call} crime 1 n
+e incident {patrol found for incident} 1 n
+e {patrols free} {patrol found for incident} 1 n
+e {patrol found for incident} {intervention on incident place} 1 n
+e {intervention on incident place} {report on incident} 1 n
+e {report on incident} {patrols free} 1 n
+e {clerks free} {report on incident} 1 n
+e {report on incident} {clerks free} 1 n
+e {patrols free} {patrol found for crime} 1 n
+e crime {patrol found for crime} 1 n
+e {patrol found for crime} {intervention on crime place} 1 n
+e {intervention on crime place} investigation 1 n
+e investigation {report on crime} 1 n
+e {report on crime} {write the report} 1 n
+e investigation {officers free} 1 n
+e investigation {vehicle free} 1 n
+e {write the report} {officers free} 1 n
+e {write the report} {inspectors free} 1 n
+e investigation {coroners free} 1 n
+e {write the report} {clerks free} 1 n
+e {inspectors free} investigation 1 n
+e {coroners free} investigation 1 n
+e {clerks free} {write the report} 1 n
+e {patrol found for incident} {clerks free} 1 n
+e {patrol found for crime} 0.3360104351 75.4796627 {clerks free} 0.9729099329 64.66197126 1 n
+h work3bis
+
+
