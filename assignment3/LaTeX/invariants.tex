@@ -6,25 +6,50 @@
 \begin{lstlisting}
 {coroners free}
 {clerks free} crime incident
-{inspectors free} report2
-intervention*2 intervention2*2 {officers free} {patrols free}*2 report2
-intervention intervention2 {patrols free} {vehicle free}
+{inspectors free} {report on crime}
+{intervention on incident place}*2 {intervention on crime place}*2 {officers free} {patrols free}*2 {report on crime}
+{intervention on incident place} {intervention on crime place} {patrols free} {vehicle free}
 \end{lstlisting}
 
-These invariants show how the Petri net can get back the global same amount of tokens. It is the result of a set of linear \enquote{flow} equations from the incidence matrix. \newline
+These invariants show how parts of the Petri net are related in terms of amount
+of tokens. It is the result of a set of linear \enquote{flow} equations from the
+incidence matrix. \newline
 
-For example, \verb#{coroners free}# place always have the same amount of tokens (because the arrow leaves this place to a transition that has an arrow to this place). \newline
+For example, \verb#{coroners free}# place always have the same amount of tokens
+(because the arrow leaves this place to a transition that has an arrow to this
+place). \newline
 
-Another example is that the amount of tokens in \verb#{clerks free}# and \verb#crime# and \verb#incident# is always the same. It can be explained by the fact that the arrows from \verb#{clerks free}# leaves weither to \verb#crime# or to \verb#incident#, which next transitions lead to send the token back to \verb#{clerks free}#. \newline
+Another example is that the amount of tokens in \verb#{clerks free}# and
+\verb#crime# and \verb#incident# is always the same. It can be explained by the
+fact that the arrows from \verb#{clerks free}# leaves weither to \verb#crime#
+or to \verb#incident#, which next transitions lead to send the token back to
+\verb#{clerks free}#. \newline
+
+The third one is \verb#{inspectors free}# and \verb#{report on crime}# that will always
+have the same amount of tokens because the transition coming to
+\verb#inspectors free# needs one token from \verb#{report on crime}# that needs a token
+from the \verb#inspectors free#. So if one or more tokens exist, they will
+always loop between those two places and nothing is ever lost or ever
+duplicate. \newline
+
+The fourth one and fifth one are much longer but follow the exact same logic.
+If you sum the number of tokens in each place of a P-semi-flow, it will always
+be the same, no matter which set of transitions you choose. \newline
 
 \subsection{T-Semi-Flows}
 
 \begin{lstlisting}
-{incident call} {patrol found} report
-{crime call} {form patrol} investigation {patrol found2} {write report}
+{incident call} {patrol found} {report on incident}
+{crime call} {form patrol} investigation {patrol found for crime} {write the report}
 {form patrol} {free patrol}
 \end{lstlisting}
 
 These invariants show how the Petri can get back to the exact same state. \newline
 
-Activating a transition \verb#{incident call}#, then a \verb#{patrol found}# transition, then a \verb#report# transition will take the Petri net in the exact same state it was before.
+Activating a transition \verb#{incident call}#, then a \verb#{patrol found}#
+transition, then a \verb#{report on incident}# transition will take the Petri
+net in the exact same state it was before. \newline
+
+The same goes for the two other T-semi-flows, if you execute them as a loop,
+you will come back to the exact same Petri Net state (with the same amount of
+token everywhere). \newline
