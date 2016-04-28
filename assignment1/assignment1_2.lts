@@ -1,0 +1,13 @@
+const N = 2
+range R = 0..(N-1)
+NOMINALSERVICE(I=0) = NODE_LEADER[I],
+// A node in the leader state can
+					// Access resources then pass a token
+NODE_LEADER[a:R] = 	([a].open -> [a].close -> [a].sndtoken -> NODE_IDLE[(a+1)%N] 
+					// Pass the token
+		 			| [a].sndtoken -> NODE_IDLE[(a+1)%N]
+					),
+// A node in the idle state is waiting to receive a token to become leader node
+NODE_IDLE[a:R] = ([a].rcvtoken -> NODE_LEADER[a])
+// hide the communications between nodes
+\ {[a:R].rcvtoken, [a:R].sndtoken}.

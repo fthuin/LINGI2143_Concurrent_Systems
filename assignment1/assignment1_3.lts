@@ -1,0 +1,42 @@
+const N = 2
+range R = 0..(N-1)
+// It starts with an idle node this time
+NOMINALRING(I=N) = NODE_IDLE[I],
+// A node in the leader state can
+				// Access resources then pass a token
+NODE_LEADER[a:R] = 	(open -> close -> sndtoken -> NODE_IDLE[a]
+					// Pass the token
+		 			| sndtoken -> NODE_IDLE[a]
+					),
+// A node in the idle/not eligible state can
+					// receive a token to become leader node
+NODE_IDLE[a:R] = 	(rcvtoken -> NODE_LEADER[a]
+					// receive a claim ; if the node number sending this claim is lower than this node, it transmits the claim
+					| rcvclaim[b:R] -> 	if (b < a) then (sndclaim[b] -> NODE_IDLE[a])
+									// ; else nothing happens
+										else NODE_IDLE[a]
+					// send a claim (when a timeout occurs)
+					| sndclaim[a] -> NODE_ELIGIBLE[a]
+					),
+// A node in eligible state can
+						// receive a token then become leader node
+NODE_ELIGIBLE[a:R] = 	(rcvtoken -> NODE_LEADER[a]
+						// receive a claim ; if the node number sending this claim is the same than this node, it becomes the leader
+						| rcvclaim[b:R] ->  if (a == b) then NODE_LEADER[a]
+										  // if the node number sending the claim is lower than this node, it transmits the claim
+											else if (b < a) then (sndclaim[b] -> NODE_IDLE[a])
+										  // else nothing happens
+											else NODE_ELIGIBLE[a]
+						// send a claim (when a timeout occurs)
+						| sndclaim[a] -> NODE_ELIGIBLE[a]
+						).
+
+// The channel is a one slot buffer reliable that pass the token or the claims to become a leader
+CHANNEL = (tokensnd -> tokenrcvd -> CHANNEL | claimsnd[a:R] -> claimrcvd[a] -> CHANNEL).
+
+// The election ring is a parallel composition of the nominal ring and the channel that needs to
+// be synchronized on the shared communication actions.
+||ELECTIONRING = ([a:R]:NOMINALRING(a) || [b:R]:CHANNEL ) / {[b:R].sndclaim[a:R]/[b].claimsnd[a],
+															[b:R].rcvclaim[a:R]/[(b+N-1)%N].claimrcvd[a],
+															[b:R].sndtoken/[b].tokensnd,
+															[b:R].rcvtoken/[(b+N-1)%N].tokenrcvd}.
